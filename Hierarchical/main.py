@@ -8,6 +8,7 @@
 
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot as plt
 from copy import deepcopy
 
 # Fungsi untuk mendapatkan centroid
@@ -68,12 +69,6 @@ def clustering(len_clusters, clusters, k):
         iter += 1
         len_clusters -= 1
 
-        print("\n-------------------------------MERGE--------------------")
-        print("MERGE: ", nearest[0])
-        print("Sisa cluster: ", len_clusters)
-
-    print("\n-------------------------------RAW CLUSTER------------------")
-    print(clusters[-1])
 
     # dapatkan hitungan cluster terakhir
     clusters = clusters[-1]
@@ -228,6 +223,7 @@ def cluster_cpi(data, centroid, label):
     return cpi_hasil
 
 
+
 if __name__ == '__main__':
 
     data, labels = loadDataset()
@@ -241,12 +237,21 @@ if __name__ == '__main__':
     Clusters, Centroids = clustering(len_clusters, clusters, k)
 
     print("\n-------------------------------CLUSTER------------------")
-    print(Clusters)
+    print( Clusters)
 
     print("\n-------------------------------CENTROID------------------")
     print(Centroids)
 
     print("\n-------------------------------CLUSTER VALIDATION-----------------")
+
+    # hitung cpi
+    cpi = cluster_cpi(data, Centroids, labels)
+    print("\nCPI: ", cpi)
+
+    # hitung SSE
+    sse = cluster_sse(data, Clusters, k)
+    print("\nSSE: ", sse)
+
     # Hitung Error Ratio
     error = error_ratio(Clusters, labels)
     print("\nERROR RATIO: ", error, "%")
@@ -254,11 +259,3 @@ if __name__ == '__main__':
     # hitung variance
     variance = cluster_variance(data, Clusters, k)
     print("\nVARIANCE: ", variance)
-
-    # hitung SSE
-    sse = cluster_sse(data, Clusters, k)
-    print("\nSSE: ", sse)
-
-    # hitung cpi
-    cpi = cluster_cpi(data, Centroids, labels)
-    print("\nCPI: ", cpi)
